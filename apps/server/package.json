@@ -1,0 +1,13 @@
+{
+  "name": "@apps/server",
+  "version": "0.0.0",
+  "type": "module",
+  "exports": "./src/index.ts",
+  "scripts": {
+    "build": "tsc -b && tsx build.ts"
+  },
+  "dependencies": {
+    "@apps/shared": "^0.0.0",
+    "@hemlock5738/esbuild-plugin-gas": "^1.0.0"
+  }
+}

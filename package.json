@@ -1,0 +1,50 @@
+{
+  "name": "seating-chart",
+  "version": "0.0.0",
+  "private": "true",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hemlock5738/seating-chart.git"
+  },
+  "license": "MIT",
+  "author": "hemlock5738",
+  "type": "module",
+  "workspaces": ["apps/*"],
+  "scripts": {
+    "build::dev": "run-s build:client:dev build:server",
+    "build::prod": "run-s build:client:prod build:server",
+    "build:client:dev": "npm run -w @apps/client build:dev",
+    "build:client:prod": "npm run -w @apps/client build:prod",
+    "build:server": "npm run -w @apps/server build",
+    "check": "biome check --write --unsafe --no-errors-on-unmatched .",
+    "cp": "run-s cp:*",
+    "cp:clasp": "cpx appsscript.json dist/",
+    "cp:client": "cpx apps/client/dist/**/* dist/client",
+    "cp:server": "cpx apps/server/dist/**/* dist/server",
+    "deploy:dev": "run-s build::dev cp push",
+    "deploy:prod": "run-s build::prod cp push",
+    "dev": "npm run -w @apps/client dev",
+    "npmrc": "GITHUB_TOKEN=$(gh auth token); cat .npmrc.template | envsubst > .npmrc",
+    "prepare": "lefthook install",
+    "push": "clasp push",
+    "sort-json": "jsonsort ./**/*.json",
+    "start": "run-s deploy:dev dev",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.3",
+    "@google/clasp": "^2.4.2",
+    "@types/google-apps-script": "^1.0.84",
+    "cpx2": "^8.0.0",
+    "json-sort-cli": "^4.0.4",
+    "lefthook": "^1.7.18",
+    "npm-run-all2": "^6.2.3",
+    "tsx": "^4.19.1",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.2"
+  },
+  "volta": {
+    "node": "22.8.0"
+  }
+}
