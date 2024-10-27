@@ -6,13 +6,8 @@ export const useMembers = (dispatch: Dispatch<SeatAction>) => {
   const { serverFunctions } = useContext(GasContext);
 
   useEffect(() => {
-    serverFunctions
-      .getMembers()
-      .then((members) => {
-        dispatch({ type: "set", key: "members", value: members });
-      })
-      .catch((e) => {
-        console.error(e);
-      });
+    serverFunctions.getMembers().then((members) => {
+      dispatch({ type: "set", key: "members", value: members });
+    });
   }, [serverFunctions, dispatch]);
 };

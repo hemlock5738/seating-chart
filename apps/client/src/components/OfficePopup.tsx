@@ -1,8 +1,8 @@
+import type { Seat } from "@apps/shared";
 import { type FC, useContext } from "react";
 import { Popup } from "react-leaflet";
-import { SeatContext } from "../contexts/seat/SeatContext";
-import type { Seat } from "@apps/shared";
 import { GasContext } from "../contexts/gas/GasContext";
+import { SeatContext } from "../contexts/seat/SeatContext";
 
 type OfficePopupProps = {
   seat: Seat;
@@ -19,17 +19,15 @@ export const OfficePopup: FC<OfficePopupProps> = ({ seat }) => {
 
   const handleLeaveSeat = () => {
     seatDispatch({ type: "leaveSeat", email, seatId: seat.id });
-    serverFunctions.move("leaveSeat", seat.id).catch((e) => {
+    serverFunctions.move("leaveSeat", seat.id).catch(() => {
       seatDispatch({ type: "sitDown", email, seatId: seat.id });
-      console.error(e);
     });
   };
 
   const handleSitDown = () => {
     seatDispatch({ type: "sitDown", email, seatId: seat.id });
-    serverFunctions.move("sitDown", seat.id).catch((e) => {
+    serverFunctions.move("sitDown", seat.id).catch(() => {
       seatDispatch({ type: "leaveSeat", email, seatId: seat.id });
-      console.error(e);
     });
   };
 

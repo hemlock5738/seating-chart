@@ -14,7 +14,7 @@ export function getSeats(): Seats {
 }
 
 export function getMembers(): Members {
-  return objectify(getRecords<Member>("members"), "id");
+  return objectify(getRecords<Member>("members"), "email");
 }
 
 export function getMemberSeats(): MemberSeats {

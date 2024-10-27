@@ -16,21 +16,17 @@ export const ConferencePopup: FC<ConferencePopupProps> = ({ seat }) => {
 
   const handleLeaveSeat = () => {
     seatDispatch({ type: "leaveSeat", email, seatId: seat.id });
-    serverFunctions.move("leaveSeat", seat.id).catch((e) => {
+    serverFunctions.move("leaveSeat", seat.id).catch(() => {
       seatDispatch({ type: "sitDown", email, seatId: seat.id });
-      console.error(e);
     });
   };
 
   const handleSitDown = () => {
     seatDispatch({ type: "sitDown", email, seatId: seat.id });
-    serverFunctions.move("sitDown", seat.id).catch((e) => {
+    serverFunctions.move("sitDown", seat.id).catch(() => {
       seatDispatch({ type: "leaveSeat", email, seatId: seat.id });
-      console.error(e);
     });
   };
-
-  console.log(memberSeatsMap.seatId[seat.id]);
 
   return (
     <Popup>

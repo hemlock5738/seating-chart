@@ -6,13 +6,8 @@ export const useEmail = (dispatch: Dispatch<SeatAction>) => {
   const { serverFunctions } = useContext(GasContext);
 
   useEffect(() => {
-    serverFunctions
-      .getEmail()
-      .then((email) => {
-        dispatch({ type: "set", key: "email", value: email });
-      })
-      .catch((e) => {
-        console.error(e);
-      });
+    serverFunctions.getEmail().then((email) => {
+      dispatch({ type: "set", key: "email", value: email });
+    });
   }, [serverFunctions, dispatch]);
 };
