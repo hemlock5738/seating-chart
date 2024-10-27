@@ -32,7 +32,7 @@ export const Floor: FC<FloorProps> = ({
       <LayerGroup>
         <ImageOverlay url={url} bounds={bounds}>
           {Object.keys(seats)
-            .filter((seatId) => seats[seatId].floor === String(floor))
+            .filter((seatId) => seats[seatId].floor === floor)
             .map((seatId) => (
               <SeatMarker key={seatId} seat={seats[seatId]} />
             ))}

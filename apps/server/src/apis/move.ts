@@ -1,10 +1,10 @@
-import { memberSeat, leaveSeat, sitDown } from "@apps/shared";
+import { leaveSeat, memberSeat, sitDown } from "@apps/shared";
 import { properties } from "../constants/index.js";
 import { putCache } from "../utils/cache.js";
 import { getEmail } from "./getEmail.js";
 import { getMemberSeats, getSeats } from "./records.js";
 
-export const move = (type: "leaveSeat" | "sitDown", seatId: string) => {
+export function move(type: "leaveSeat" | "sitDown", seatId: string) {
   const lock = LockService.getScriptLock();
   lock.waitLock(30000);
 
@@ -48,4 +48,4 @@ export const move = (type: "leaveSeat" | "sitDown", seatId: string) => {
   }
 
   lock.releaseLock();
-};
+}

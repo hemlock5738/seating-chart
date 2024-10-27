@@ -14,10 +14,9 @@ const center: L.LatLngExpression = [500, 500];
 
 const floors: Omit<FloorProps, "bounds">[] = [
   {
-    floor: 1,
-    name: "f1",
-    url: f1,
-    checked: true,
+    floor: 3,
+    name: "f3",
+    url: f3,
   },
   {
     floor: 2,
@@ -25,9 +24,10 @@ const floors: Omit<FloorProps, "bounds">[] = [
     url: f2,
   },
   {
-    floor: 3,
-    name: "f3",
-    url: f3,
+    floor: 1,
+    name: "f1",
+    url: f1,
+    checked: true,
   },
 ];
 

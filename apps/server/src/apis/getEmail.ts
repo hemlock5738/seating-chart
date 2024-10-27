@@ -1,3 +1,3 @@
-export const getEmail = () => {
+export function getEmail() {
   return Session.getActiveUser().getEmail();
-};
+}

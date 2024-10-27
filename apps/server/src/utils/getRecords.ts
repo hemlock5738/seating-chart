@@ -10,7 +10,9 @@ export const getRecords = <T>(sheetName: SheetName): T[] => {
   if (!sheet) return [];
   const [columnNames, ...values] = sheet.getDataRange().getValues();
   const records = values.map((vals) =>
-    Object.fromEntries(columnNames.map((columnName) => [columnName, vals])),
+    Object.fromEntries(
+      columnNames.map((columnName, i) => [columnName, vals[i]]),
+    ),
   );
   putCache(sheetName, records);
   return records;

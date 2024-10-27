@@ -1,3 +1,4 @@
+export * from "./apis/clearCaches.js";
 export * from "./apis/createSheet.js";
 export * from "./apis/doGet.js";
 export * from "./apis/getEmail.js";

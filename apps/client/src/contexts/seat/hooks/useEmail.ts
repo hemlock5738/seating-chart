@@ -11,8 +11,8 @@ export const useEmail = (dispatch: Dispatch<SeatAction>) => {
       .then((email) => {
         dispatch({ type: "set", key: "email", value: email });
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((e) => {
+        console.error(e);
       });
   }, [serverFunctions, dispatch]);
 };

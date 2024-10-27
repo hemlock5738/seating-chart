@@ -1,7 +1,7 @@
+import type { Seat } from "@apps/shared";
 import type { FC, ReactNode } from "react";
 import { Marker } from "react-leaflet";
 import { ColorMarker } from "../leaflet/ColorMarker";
-import type { Seat } from "@apps/shared";
 import { categoryColor } from "../utils/colors";
 
 type OccupiedSeatMarkerProps = {
@@ -15,7 +15,7 @@ export const OccupiedSeatMarker: FC<OccupiedSeatMarkerProps> = ({
 }) => {
   return (
     <Marker
-      position={[Number(seat.lat), Number(seat.lng)]}
+      position={[seat.lat, seat.lng]}
       icon={ColorMarker(categoryColor[seat.category])}
     >
       {children}

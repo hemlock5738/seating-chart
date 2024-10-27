@@ -27,3 +27,7 @@ export const putCache = (key: SheetName, values: unknown[]) => {
     CacheService.getDocumentCache()?.put(pKey, pRecords);
   }
 };
+
+export const removeCache = (key: SheetName) => {
+  CacheService.getDocumentCache()?.remove(key);
+};
