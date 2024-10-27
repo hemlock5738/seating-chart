@@ -6,7 +6,7 @@ import {
   LayerGroup,
   LayersControl,
 } from "react-leaflet";
-import { SeatingContext } from "../contexts/seat/SeatContext";
+import { SeatContext } from "../contexts/seat/SeatContext";
 import { SeatMarker } from "./SeatMarker";
 
 export type FloorProps = {
@@ -24,15 +24,15 @@ export const Floor: FC<FloorProps> = ({
   bounds,
   checked,
 }) => {
-  const { seatingState } = useContext(SeatingContext);
-  const seats = seatingState.seats;
+  const { seatState } = useContext(SeatContext);
+  const seats = seatState.seats;
 
   return (
     <LayersControl.BaseLayer name={name} checked={checked}>
       <LayerGroup>
         <ImageOverlay url={url} bounds={bounds}>
           {Object.keys(seats)
-            .filter((seatId) => seats[seatId].floor === floor)
+            .filter((seatId) => seats[seatId].floor === String(floor))
             .map((seatId) => (
               <SeatMarker key={seatId} seat={seats[seatId]} />
             ))}

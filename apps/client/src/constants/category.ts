@@ -1,4 +1,4 @@
-import type { Category } from "../types/Seat";
+import type { Category } from "@apps/shared";
 
 export const category: Record<Category, string> = {
   normal: "執務席",

@@ -1,6 +1,6 @@
 import type { FC, ReactNode } from "react";
 import { CircleMarker } from "react-leaflet";
-import type { Seat } from "../types/Seat";
+import type { Seat } from "@apps/shared";
 import { categoryColor, colorHue } from "../utils/colors";
 
 type VacantSeatMarkerProps = {
@@ -14,7 +14,7 @@ export const VacantSeatMarker: FC<VacantSeatMarkerProps> = ({
 }) => {
   return (
     <CircleMarker
-      center={[seat.lat, seat.lng]}
+      center={[Number(seat.lat), Number(seat.lng)]}
       radius={10}
       className={colorHue[categoryColor[seat.category]]}
     >

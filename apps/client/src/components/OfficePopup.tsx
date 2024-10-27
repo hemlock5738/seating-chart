@@ -1,27 +1,36 @@
 import { type FC, useContext } from "react";
 import { Popup } from "react-leaflet";
-import { SeatingContext } from "../contexts/seat/SeatContext";
-import type { Seat } from "../types/Seat";
+import { SeatContext } from "../contexts/seat/SeatContext";
+import type { Seat } from "@apps/shared";
+import { GasContext } from "../contexts/gas/GasContext";
 
 type OfficePopupProps = {
   seat: Seat;
 };
 
 export const OfficePopup: FC<OfficePopupProps> = ({ seat }) => {
-  const { seatingState, seatings, seatingDispatch } =
-    useContext(SeatingContext);
-  const members = seatingState.members;
-  const email = seatingState.email;
+  const { seatState, memberSeatsMap, seatDispatch } = useContext(SeatContext);
+  const { serverFunctions } = useContext(GasContext);
+  const members = seatState.members;
+  const email = seatState.email;
 
-  const emails = seatings.bySeatId[seat.id];
+  const emails = memberSeatsMap.seatId[seat.id];
   const member = emails ? members[[...emails][0]] : undefined;
 
-  const handleStandup = () => {
-    seatingDispatch({ type: "standup", email, seatId: seat.id });
+  const handleLeaveSeat = () => {
+    seatDispatch({ type: "leaveSeat", email, seatId: seat.id });
+    serverFunctions.move("leaveSeat", seat.id).catch((e) => {
+      seatDispatch({ type: "sitDown", email, seatId: seat.id });
+      console.error(e);
+    });
   };
 
-  const handleSitdown = () => {
-    seatingDispatch({ type: "sitdown", email, seatId: seat.id });
+  const handleSitDown = () => {
+    seatDispatch({ type: "sitDown", email, seatId: seat.id });
+    serverFunctions.move("sitDown", seat.id).catch((e) => {
+      seatDispatch({ type: "leaveSeat", email, seatId: seat.id });
+      console.error(e);
+    });
   };
 
   return (
@@ -32,8 +41,8 @@ export const OfficePopup: FC<OfficePopupProps> = ({ seat }) => {
           <p>{member.name}</p>
           <p>{member.department}</p>
           <p>{member.position}</p>
-          {seatings.bySeatId[seat.id].has(email) ? (
-            <button type="button" onClick={handleStandup}>
+          {memberSeatsMap.seatId[seat.id].includes(email) ? (
+            <button type="button" onClick={handleLeaveSeat}>
               standUp
             </button>
           ) : (
@@ -44,7 +53,7 @@ export const OfficePopup: FC<OfficePopupProps> = ({ seat }) => {
         <>
           <p>{seat.id}</p>
           <p>vacant</p>
-          <button type="button" onClick={handleSitdown}>
+          <button type="button" onClick={handleSitDown}>
             sitDown
           </button>
         </>

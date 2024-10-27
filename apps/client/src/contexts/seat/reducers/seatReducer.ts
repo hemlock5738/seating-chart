@@ -1,9 +1,9 @@
-import type {
-  MemberSeat,
-  MemberSeats,
-  Members,
-  Seat,
-  Seats,
+import {
+  type MemberSeats,
+  type Members,
+  type Seats,
+  leaveSeat,
+  sitDown,
 } from "@apps/shared";
 import { category } from "../../../constants/category";
 
@@ -13,43 +13,6 @@ export type SeatState = {
   memberSeats: MemberSeats;
   email: string;
   filteredSeatIds: Set<string>;
-};
-
-const leaveSeat = (email: string, seatId: string, memberSeats: MemberSeats) => {
-  const filter = (memberSeat: MemberSeat) =>
-    memberSeat.email === email && memberSeat.seatId === seatId;
-  const newMemberSeats = memberSeats.filter(
-    (memberSeat) => !filter(memberSeat),
-  );
-  const deletionIndices = memberSeats
-    .map((memberSeat, i) => ({ index: i, ...memberSeat }))
-    .filter((memberSeat) => filter(memberSeat))
-    .map((memberSeat) => memberSeat.index);
-  return [newMemberSeats, deletionIndices] as const;
-};
-
-const sitDown = (
-  email: string,
-  seatId: string,
-  memberSeats: MemberSeats,
-  seats: Seats,
-) => {
-  const isConferenceRoom = (seat: Seat) => seat.category === "conference";
-  const filter = (memberSeat: MemberSeat) =>
-    memberSeat.email === email &&
-    (isConferenceRoom(seats[seatId])
-      ? isConferenceRoom(seats[memberSeat.seatId])
-      : !isConferenceRoom(seats[memberSeat.seatId]));
-  const newMemberSeat = { email, seatId };
-  const newMemberSeats = [
-    ...memberSeats.filter((memberSeat) => !filter(memberSeat)),
-    newMemberSeat,
-  ];
-  const deletionIndices = memberSeats
-    .map((memberSeat, i) => ({ index: i, ...memberSeat }))
-    .filter((memberSeat) => filter(memberSeat))
-    .map((memberSeat) => memberSeat.index);
-  return [newMemberSeats, deletionIndices, newMemberSeat] as const;
 };
 
 export type SeatAction =
@@ -74,7 +37,7 @@ export const seatReducer = (
       };
     }
     case "leaveSeat": {
-      const [newMemberSeats] = leaveSeat(
+      const { newMemberSeats } = leaveSeat(
         action.email,
         action.seatId,
         state.memberSeats,
@@ -85,7 +48,7 @@ export const seatReducer = (
       };
     }
     case "sitDown": {
-      const [newMemberSeats] = sitDown(
+      const { newMemberSeats } = sitDown(
         action.email,
         action.seatId,
         state.memberSeats,

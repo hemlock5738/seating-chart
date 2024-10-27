@@ -1,4 +1,4 @@
-import { type MemberSeat, type Seat, memberSeat } from "@apps/shared";
+import { memberSeat, leaveSeat, sitDown } from "@apps/shared";
 import { properties } from "../constants/index.js";
 import { putCache } from "../utils/cache.js";
 import { getEmail } from "./getEmail.js";
@@ -14,44 +14,38 @@ export const move = (type: "leaveSeat" | "sitDown", seatId: string) => {
 
   const email = getEmail();
   const memberSeats = getMemberSeats();
-  let filter: (memberSeat: MemberSeat) => boolean;
 
   switch (type) {
     case "leaveSeat": {
-      filter = (memberSeat: MemberSeat) =>
-        memberSeat.email === email && memberSeat.seatId === seatId;
-      const deletionMemberSeats = memberSeats
-        .map((memberSeat, i) => ({ index: i, ...memberSeat }))
-        .filter((memberSeat) => filter(memberSeat));
-      for (const memberSeat of deletionMemberSeats) {
-        memberSeatsSheet.deleteRow(memberSeat.index + 2);
+      const { newMemberSeats, deletionIndices } = leaveSeat(
+        email,
+        seatId,
+        memberSeats,
+      );
+      for (const index of deletionIndices) {
+        memberSeatsSheet.deleteRow(index + 2);
       }
+      putCache("memberSeats", newMemberSeats);
       break;
     }
     case "sitDown": {
       const seats = getSeats();
-      filter = (memberSeat: MemberSeat) =>
-        memberSeat.email === email &&
-        (isConferenceRoom(seats[seatId])
-          ? isConferenceRoom(seats[memberSeat.seatId])
-          : !isConferenceRoom(seats[memberSeat.seatId]));
-      const isConferenceRoom = (seat: Seat) => seat.category === "conference";
-      const deletionMemberSeats = memberSeats
-        .map((memberSeat, i) => ({ index: i, ...memberSeat }))
-        .filter((memberSeat) => filter(memberSeat));
-      for (const memberSeat of deletionMemberSeats) {
-        memberSeatsSheet.deleteRow(memberSeat.index + 2);
+      const { newMemberSeats, deletionIndices, newMemberSeat } = sitDown(
+        email,
+        seatId,
+        memberSeats,
+        seats,
+      );
+      for (const index of deletionIndices) {
+        memberSeatsSheet.deleteRow(index + 2);
       }
-      const newRecord = { email, seatId };
-      memberSeatsSheet.appendRow(memberSeat.map((column) => newRecord[column]));
+      memberSeatsSheet.appendRow(
+        memberSeat.map((column) => newMemberSeat[column]),
+      );
+      putCache("memberSeats", newMemberSeats);
       break;
     }
   }
-
-  const newMemberSeats = memberSeats.filter(
-    (memberSeat) => !filter(memberSeat),
-  );
-  putCache("memberSeats", newMemberSeats);
 
   lock.releaseLock();
 };

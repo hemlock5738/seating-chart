@@ -10,7 +10,9 @@
   "license": "MIT",
   "author": "hemlock5738",
   "type": "module",
-  "workspaces": ["apps/*"],
+  "workspaces": [
+    "apps/*"
+  ],
   "scripts": {
     "build::dev": "run-s build:client:dev build:server",
     "build::prod": "run-s build:client:prod build:server",

@@ -1,5 +1,7 @@
 {
   "name": "@apps/client",
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
     "build:dev": "tsc -b && vite build --mode=development",
     "build:prod": "tsc -b && vite build --mode=production",

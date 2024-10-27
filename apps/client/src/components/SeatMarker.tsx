@@ -1,6 +1,6 @@
 import { type FC, useContext } from "react";
-import { SeatingContext } from "../contexts/seat/SeatContext";
-import type { Seat } from "../types/Seat";
+import { SeatContext } from "../contexts/seat/SeatContext";
+import type { Seat } from "@apps/shared";
 import { ConferencePopup } from "./ConferencePopup";
 import { OccupiedSeatMarker } from "./OccupiedSeatMarker";
 import { OfficePopup } from "./OfficePopup";
@@ -11,9 +11,9 @@ type SeatMarkerProps = {
 };
 
 export const SeatMarker: FC<SeatMarkerProps> = ({ seat }) => {
-  const { seatingState, seatings } = useContext(SeatingContext);
+  const { seatState, memberSeatsMap } = useContext(SeatContext);
 
-  if (!seatingState.filteredSeatIds.has(seat.id)) {
+  if (!seatState.filteredSeatIds.has(seat.id)) {
     return;
   }
 
@@ -24,7 +24,7 @@ export const SeatMarker: FC<SeatMarkerProps> = ({ seat }) => {
       <OfficePopup seat={seat} />
     );
 
-  return seatings.bySeatId[seat.id] ? (
+  return memberSeatsMap.seatId[seat.id] ? (
     <OccupiedSeatMarker seat={seat}>{Popup}</OccupiedSeatMarker>
   ) : (
     <VacantSeatMarker seat={seat}>{Popup}</VacantSeatMarker>
