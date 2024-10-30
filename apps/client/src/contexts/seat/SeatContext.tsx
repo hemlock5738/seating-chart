@@ -28,11 +28,11 @@ type Value = {
 };
 
 const initialState: SeatState = {
-  members: {},
-  seats: {},
-  memberSeats: [],
-  email: "",
-  filteredSeatIds: new Set(),
+  members: undefined,
+  seats: undefined,
+  memberSeats: undefined,
+  email: undefined,
+  filteredSeatIds: undefined,
 };
 
 const defaultValue: Value = {

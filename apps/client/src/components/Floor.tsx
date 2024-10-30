@@ -31,11 +31,12 @@ export const Floor: FC<FloorProps> = ({
     <LayersControl.BaseLayer name={name} checked={checked}>
       <LayerGroup>
         <ImageOverlay url={url} bounds={bounds}>
-          {Object.keys(seats)
-            .filter((seatId) => seats[seatId].floor === floor)
-            .map((seatId) => (
-              <SeatMarker key={seatId} seat={seats[seatId]} />
-            ))}
+          {seats &&
+            Object.keys(seats)
+              .filter((seatId) => seats[seatId].floor === floor)
+              .map((seatId) => (
+                <SeatMarker key={seatId} seat={seats[seatId]} />
+              ))}
         </ImageOverlay>
       </LayerGroup>
     </LayersControl.BaseLayer>

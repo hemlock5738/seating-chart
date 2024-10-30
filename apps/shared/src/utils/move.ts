@@ -24,7 +24,9 @@ export const sitDown = (
   memberSeats: MemberSeats,
   seats: Seats,
 ) => {
-  const isConferenceRoom = (seat: Seat) => seat.category === "conference";
+  const isConferenceRoom = (seat: Seat) => {
+    return seat.category === "conference";
+  };
   const filter = (memberSeat: MemberSeat) =>
     memberSeat.email === email &&
     (isConferenceRoom(seats[seatId])

@@ -59,11 +59,11 @@
                 });
               });
             break;
-          case "REQUEST_GS":
+          case "request":
             if (args.length === 0) {
               google.script[functionName[0]][functionName[1]]((response) => {
                 postMessage({
-                  type: "RESPONSE_GS",
+                  type: "response",
                   id,
                   response,
                 });
@@ -71,7 +71,7 @@
             } else {
               google.script[functionName[0]][functionName[1]](...args);
               postMessage({
-                type: "RESPONSE_GS",
+                type: "response",
                 id,
                 response: undefined,
               });

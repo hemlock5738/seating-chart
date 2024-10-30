@@ -4,13 +4,13 @@ import type { SeatAction } from "../reducers/seatReducer";
 
 export const useFilteredSeatIds = (
   dispatch: Dispatch<SeatAction>,
-  seats: Seats,
+  seats?: Seats,
 ) => {
   useEffect(() => {
     dispatch({
       type: "set",
       key: "filteredSeatIds",
-      value: new Set(Object.values(seats).map((seat) => seat.id)),
+      value: new Set(Object.values(seats ?? {}).map((seat) => seat.id)),
     });
   }, [dispatch, seats]);
 };

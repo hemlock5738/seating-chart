@@ -11,10 +11,10 @@ type ConferencePopupProps = {
 export const ConferencePopup: FC<ConferencePopupProps> = ({ seat }) => {
   const { seatState, memberSeatsMap, seatDispatch } = useContext(SeatContext);
   const { serverFunctions } = useContext(GasContext);
-  const members = seatState.members;
-  const email = seatState.email;
+  const { email, members } = seatState;
 
   const handleLeaveSeat = () => {
+    if (email === undefined) return;
     seatDispatch({ type: "leaveSeat", email, seatId: seat.id });
     serverFunctions.move("leaveSeat", seat.id).catch(() => {
       seatDispatch({ type: "sitDown", email, seatId: seat.id });
@@ -22,6 +22,7 @@ export const ConferencePopup: FC<ConferencePopupProps> = ({ seat }) => {
   };
 
   const handleSitDown = () => {
+    if (email === undefined) return;
     seatDispatch({ type: "sitDown", email, seatId: seat.id });
     serverFunctions.move("sitDown", seat.id).catch(() => {
       seatDispatch({ type: "leaveSeat", email, seatId: seat.id });
@@ -32,15 +33,17 @@ export const ConferencePopup: FC<ConferencePopupProps> = ({ seat }) => {
     <Popup>
       <p>{seat.id}</p>
       <div>
-        {memberSeatsMap.seatId[seat.id]?.map((email) => {
-          const member = members[email];
-          return (
-            <div key={email}>
-              <p>{member?.name}</p>
-            </div>
-          );
-        })}
-        {memberSeatsMap.seatId[seat.id]?.includes(email) ? (
+        {members &&
+          memberSeatsMap.seatId[seat.id]?.map((email) => {
+            const member = members[email];
+            return (
+              <div key={email}>
+                <p>{member?.name}</p>
+              </div>
+            );
+          })}
+        {email !== undefined &&
+        memberSeatsMap.seatId[seat.id]?.includes(email) ? (
           <button type="button" onClick={handleLeaveSeat}>
             leaveSeat
           </button>

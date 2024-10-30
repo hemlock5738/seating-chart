@@ -16,8 +16,7 @@ export const getCache = <T, U extends SheetName>(key: U): T[] => {
 
 export const putCache = (key: SheetName, values: unknown[]) => {
   const sizePerKey = sizePerKeys[key];
-  const size = Number(CacheService.getDocumentCache()?.get(key) ?? -1);
-  const count = (size + sizePerKey - 1) / sizePerKey;
+  const count = (values.length + sizePerKey - 1) / sizePerKey;
   CacheService.getDocumentCache()?.put(key, String(values.length));
   for (let i = 0; i < count; i++) {
     const pKey = `${key}${i}`;

@@ -1,5 +1,5 @@
-import type { Color } from "../types/Color";
 import type { Category } from "@apps/shared";
+import type { Color } from "../types/Color";
 
 export const categoryColor: Record<Category, Color> = {
   normal: "blue",

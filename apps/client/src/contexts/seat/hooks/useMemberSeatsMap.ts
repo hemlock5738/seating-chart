@@ -12,14 +12,16 @@ export const initialMemberSeatsMap: MemberSeatsMap = {
   email: {},
 };
 
-export const useMemberSeatsMap = (memberSeats: MemberSeats): MemberSeatsMap => {
+export const useMemberSeatsMap = (
+  memberSeats?: MemberSeats,
+): MemberSeatsMap => {
   const seatidMap = useMemo(
-    () => createMap(memberSeats, "seatId", "email"),
+    () => createMap(memberSeats ?? [], "seatId", "email"),
     [memberSeats],
   );
 
   const emailMap = useMemo(
-    () => createMap(memberSeats, "email", "seatId"),
+    () => createMap(memberSeats ?? [], "email", "seatId"),
     [memberSeats],
   );
 

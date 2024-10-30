@@ -11,13 +11,13 @@ type OfficePopupProps = {
 export const OfficePopup: FC<OfficePopupProps> = ({ seat }) => {
   const { seatState, memberSeatsMap, seatDispatch } = useContext(SeatContext);
   const { serverFunctions } = useContext(GasContext);
-  const members = seatState.members;
-  const email = seatState.email;
+  const { email, members } = seatState;
 
   const emails = memberSeatsMap.seatId[seat.id];
-  const member = emails ? members[[...emails][0]] : undefined;
+  const member = emails && members ? members[[...emails][0]] : undefined;
 
   const handleLeaveSeat = () => {
+    if (email === undefined) return;
     seatDispatch({ type: "leaveSeat", email, seatId: seat.id });
     serverFunctions.move("leaveSeat", seat.id).catch(() => {
       seatDispatch({ type: "sitDown", email, seatId: seat.id });
@@ -25,6 +25,7 @@ export const OfficePopup: FC<OfficePopupProps> = ({ seat }) => {
   };
 
   const handleSitDown = () => {
+    if (email === undefined) return;
     seatDispatch({ type: "sitDown", email, seatId: seat.id });
     serverFunctions.move("sitDown", seat.id).catch(() => {
       seatDispatch({ type: "leaveSeat", email, seatId: seat.id });
@@ -39,7 +40,7 @@ export const OfficePopup: FC<OfficePopupProps> = ({ seat }) => {
           <p>{member.name}</p>
           <p>{member.department}</p>
           <p>{member.position}</p>
-          {memberSeatsMap.seatId[seat.id].includes(email) ? (
+          {email && memberSeatsMap.seatId[seat.id].includes(email) ? (
             <button type="button" onClick={handleLeaveSeat}>
               standUp
             </button>
